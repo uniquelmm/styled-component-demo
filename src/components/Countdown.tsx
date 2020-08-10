@@ -1,5 +1,6 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
+
 //改变类型
 interface DisplayShow {
   displayShow: string;
@@ -15,6 +16,7 @@ const CountdownContainer = styled.div<DisplayShow>`
       `
     );
   }}
+
   background: #222a33;
   opacity: 0.9;
   color: #fff;
@@ -25,7 +27,7 @@ const CountdownContainer = styled.div<DisplayShow>`
   left: 0;
   bottom: 0;
   flex-wrap: wrap;
-  
+  position: absolute;
 `;
 
 const ProductTitle = styled.div`
@@ -55,7 +57,7 @@ const CountdownDiscount = styled.div`
 `;
 
 //改变类型
-interface showViewProductsProps {
+interface DisplayViewProductsProps {
   showViewProducts: string;
   setShowViewProducts: (value: string) => void;
 }
@@ -69,7 +71,7 @@ const ViewProducts = styled.div`
 `;
 
 // 绿色按钮
-const Countdown: FC<showViewProductsProps> = ({
+const Countdown: FC<DisplayViewProductsProps> = ({
   showViewProducts,
   setShowViewProducts,
 }) => {
@@ -92,6 +94,13 @@ const Countdown: FC<showViewProductsProps> = ({
       minutes: parseInt(minutes.toString()),
       seconds: parseInt(seconds.toString()),
     });
+    function saveTime() {
+      localStorage.setItem("perviousTime", JSON.stringify(time));
+      // console.log(localStorage.perviousTime);
+      // console.log(JSON.parse(localStorage.getItem("perviousTime")));
+    }
+    saveTime();
+
     //tick的方法
     const tick = () => {
       // 暂停，或已结束
@@ -127,6 +136,7 @@ const Countdown: FC<showViewProductsProps> = ({
     React.useEffect(() => {
       // 执行定时
       let timerID = setInterval(() => tick(), 1000);
+
       // 卸载组件时进行清理
       return () => {
         clearInterval(timerID);
