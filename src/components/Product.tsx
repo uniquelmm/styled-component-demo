@@ -1,27 +1,23 @@
 import React, { ChangeEvent, FC, useState } from "react";
 import styled from "styled-components";
 import data from "../data";
-// 最外层
 
 //改变类型
 interface DisplayShowProps {
   setDisplayShow: (value: string) => void;
   displayShow: string;
-  displayViewProducts: string;
-  setDisplayViewProducts: (value: string) => void;
+  showViewProducts: string;
+  setShowViewProducts: (value: string) => void;
 }
 
-const MaskDiv = styled.div`
-  width: 100%;
-  height: 100%;
-  z-index: 99999;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.75); /* 0.75 透明度 */
-  filter: alpha(opacity=50);
-  position: absolute;
-`;
 const BigProductContainer = styled.div`
+width: 100%;
+z-index: 99999;
+top: 0;
+left: 0;
+background-color: rgba(0, 0, 0, 0.75); /* 0.75 透明度 */
+filter: alpha(opacity=50);
+position: absolute;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -33,6 +29,7 @@ const BigProductContainer = styled.div`
   justify-content: center;
   margin: auto;
 `;
+
 // 每个商品展示
 const ProductContainer = styled.div`
   padding: 14px;
@@ -46,12 +43,14 @@ const ProductContainer = styled.div`
   background: #fff;
   position: relative;
 `;
+
 // 图片
-const Img = styled.img`
+const Image = styled.img`
   width: 150px;
   height: 150px;
   margin-top: 20px;
 `;
+
 // 图片名
 const Name = styled.div`
   margin-top: 12px;
@@ -63,6 +62,7 @@ const Name = styled.div`
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica,
     Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
 `;
+
 // 产品尺码选择
 const Size = styled.div`
   display: flex !important;
@@ -70,10 +70,10 @@ const Size = styled.div`
   justify-content: center;
   font-size: 15px;
 `;
+
 const ProductIcon = styled.div`
   position: relative;
   margin-right: 10px;
-
   &:before {
     content: "↓";
     position: absolute;
@@ -86,16 +86,19 @@ const ProductIcon = styled.div`
     pointer-events: none;
   }
 `;
+
 const ProductSelect = styled.select`
   width: 100%;
   padding: 10px 30px 10px 10px;
   appearance: none;
 `;
+
 // 数量
-const Number = styled.div`
+const NumberControl = styled.div`
   display: flex;
   margin-left: 10px;
 `;
+
 // 数量减
 const ButtonOne = styled.button`
   padding: 5px 10px;
@@ -105,13 +108,17 @@ const ButtonOne = styled.button`
   border: none;
   cursor: pointer;
 `;
+
 // 数字
 const Input = styled.input`
+type:number;
   border: 1px solid #e4e4e4;
   border-radius: 3px;
   text-align: center;
   width: 30px;
+  
 `;
+
 // 数量增
 const ButtonTow = styled.button`
   padding: 5px 10px;
@@ -121,6 +128,7 @@ const ButtonTow = styled.button`
   border: none;
   cursor: pointer;
 `;
+
 // 产品价格
 const Price = styled.div`
   margin: 5px;
@@ -128,6 +136,7 @@ const Price = styled.div`
   display: flex;
   border-radius: 3px;
 `;
+
 //  accept 按钮
 const Button = styled.button`
   padding: 14px;
@@ -140,6 +149,7 @@ const Button = styled.button`
   width: 100%;
   border: none;
 `;
+
 // 产品现价
 const DiscountPrice = styled.div`
   margin-right: 5px;
@@ -147,6 +157,7 @@ const DiscountPrice = styled.div`
   font-size: 1.5em;
   font-weight: 600;
 `;
+
 // 产品原价
 const OriginalPrice = styled.div`
   margin-right: 5px;
@@ -165,6 +176,7 @@ const Frame = styled.div`
   display: flex;
   justify-content: center;
 `;
+
 const ForkTop = styled.div`
   right: 13px;
   top: 8px;
@@ -172,6 +184,7 @@ const ForkTop = styled.div`
   position: absolute;
   z-index: 99999;
 `;
+
 const Percent = styled.div``;
 const Off = styled.div``;
 
@@ -179,8 +192,8 @@ const Off = styled.div``;
 const Product: FC<DisplayShowProps> = ({
   setDisplayShow,
   displayShow,
-  setDisplayViewProducts,
-  displayViewProducts,
+  setShowViewProducts,
+  showViewProducts,
 }) => {
   const [currentProduct, setCurrentProduct] = useState(data.variants[0]);
   const [productNumber, setProductNumber] = useState(1);
@@ -195,6 +208,21 @@ const Product: FC<DisplayShowProps> = ({
       }
     });
   };
+//产品减少
+const reduceProductNumber=(number:number)=>{
+  changeProductNumber(number-1)
+}
+  //产品数量大于0
+  const changeProductNumber=(number:number)=>{
+    if(number-1<1){
+      number=1;
+    }
+    setProductNumber(number)
+    }
+//产品增加
+const addProductNumber =(number:number)=>{
+  changeProductNumber(number+1)
+}
   const handleProductData = () => {
     let totalPrices = currentProduct.discountPrice * productNumber;
     console.log(totalPrices);
@@ -202,28 +230,18 @@ const Product: FC<DisplayShowProps> = ({
   };
 
   return (
-    <div style={{ display: displayViewProducts }}>
-      <MaskDiv>
+    <div style={{ display: showViewProducts }}>
         <BigProductContainer>
           <ProductContainer>
-            <ForkTop onClick={() => setDisplayViewProducts("none")}> ✕</ForkTop>
-
-            <Img src={currentProduct.featured_image.src} />
+            <ForkTop onClick={() => setShowViewProducts("none")}> ✕</ForkTop>
+            <Image src={currentProduct.featured_image.src} />
             <Name>{currentProduct.title}</Name>
             <Size>
               <ProductIcon>
                 <ProductSelect onChange={handleChangeProduct}>
                   {data?.variants?.map((variant: any) => {
-                    let options = "";
-                    if (variant.option1) {
-                      options += variant.option1 + "/";
-                    }
-                    if (variant.option2) {
-                      options += variant.option2;
-                    }
-                    if (variant.option3) {
-                      options += "/" + variant.option3;
-                    }
+                    let fruits = ["ariant.option1", "ariant.option2", "ariant.option3"];
+                    let options = fruits.join('/');
                     return (
                       <option key={variant.id} value={variant.id}>
                         {options}
@@ -232,15 +250,21 @@ const Product: FC<DisplayShowProps> = ({
                   })}
                 </ProductSelect>
               </ProductIcon>
-              <Number>
-                <ButtonOne onClick={() => setProductNumber(productNumber - 1)}>
+              <NumberControl>
+                <ButtonOne onClick={() => reduceProductNumber(productNumber) }>
                   -
                 </ButtonOne>
-                <Input value={productNumber} />
-                <ButtonTow onClick={() => setProductNumber(productNumber + 1)}>
+                <Input 
+                value={productNumber} 
+                onChange={(event)=>{
+                  const value=event.target.value;
+                changeProductNumber(Number(value));
+                setProductNumber(Number(event.target.value))}}
+                />
+                <ButtonTow onClick={() => addProductNumber(productNumber)}>
                   +
                 </ButtonTow>
-              </Number>
+              </NumberControl>
             </Size>
             <Price>
               <DiscountPrice>${currentProduct.discountPrice}</DiscountPrice>
@@ -255,7 +279,6 @@ const Product: FC<DisplayShowProps> = ({
             <Button onClick={handleProductData}>Accept</Button>
           </ProductContainer>
         </BigProductContainer>
-      </MaskDiv>
     </div>
   );
 };

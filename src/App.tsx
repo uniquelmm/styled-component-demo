@@ -3,20 +3,20 @@ import Countdown from "./components/Countdown";
 import Product from "./components/Product";
 
 const App: FC = () => {
-  const [displayShow, setDisplayShow] = useState("flex");
-  const [displayViewProducts, setDisplayViewProducts] = useState("flex");
+  const [displayShow, setDisplayShow] = useState("true");
+  const [showViewProducts, setShowViewProducts] = useState("true");
   return (
     <div>
       {/* 绿色按钮 */}
       <Countdown
-        displayViewProducts={displayViewProducts}
-        setDisplayViewProducts={setDisplayViewProducts}
+        showViewProducts={showViewProducts}
+        setShowViewProducts={setShowViewProducts}
       />
       {/* 产品组件打叉按钮和绿色按钮 */}
       <Product
-        setDisplayViewProducts={setDisplayViewProducts}
+        setShowViewProducts={setShowViewProducts}
         displayShow={displayShow}
-        displayViewProducts={displayViewProducts}
+        showViewProducts={showViewProducts}
         setDisplayShow={setDisplayShow}
       />
     </div>

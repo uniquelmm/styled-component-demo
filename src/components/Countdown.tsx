@@ -15,7 +15,6 @@ const CountdownContainer = styled.div<DisplayShow>`
       `
     );
   }}
-
   background: #222a33;
   opacity: 0.9;
   color: #fff;
@@ -26,8 +25,9 @@ const CountdownContainer = styled.div<DisplayShow>`
   left: 0;
   bottom: 0;
   flex-wrap: wrap;
-  position: absolute;
+  
 `;
+
 const ProductTitle = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -35,6 +35,7 @@ const ProductTitle = styled.div`
   font-size: 15px;
   flex: 1 1 auto;
 `;
+
 const CountdownChunk = styled.div``;
 const Span = styled.span`
   border: 1px dashed #fff;
@@ -48,13 +49,15 @@ const SmallCountdownContainer = styled.div`
   display: flex;
   align-items: center;
 `;
+
 const CountdownDiscount = styled.div`
   padding: 15px 0;
 `;
+
 //改变类型
-interface DisplayViewProductsProps {
-  displayViewProducts: string;
-  setDisplayViewProducts: (value: string) => void;
+interface showViewProductsProps {
+  showViewProducts: string;
+  setShowViewProducts: (value: string) => void;
 }
 
 const ViewProducts = styled.div`
@@ -64,14 +67,14 @@ const ViewProducts = styled.div`
   border-radius: 5px;
   cursor: pointer;
 `;
+
 // 绿色按钮
-//
-const Countdown: FC<DisplayViewProductsProps> = ({
-  displayViewProducts,
-  setDisplayViewProducts,
+const Countdown: FC<showViewProductsProps> = ({
+  showViewProducts,
+  setShowViewProducts,
 }) => {
   const handleViewProducts = () => {
-    setDisplayViewProducts("flex");
+    setShowViewProducts("flex");
   };
 
   //倒计时的打叉
