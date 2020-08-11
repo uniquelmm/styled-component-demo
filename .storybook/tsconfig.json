@@ -1,0 +1,15 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "noEmit": false
+    },
+    "include": [
+        "../stories"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "build",
+        ".storybook"
+    ]
+}
