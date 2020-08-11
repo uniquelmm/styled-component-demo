@@ -94,17 +94,18 @@ const Countdown: FC<DisplayViewProductsProps> = ({
       minutes: parseInt(minutes.toString()),
       seconds: parseInt(seconds.toString()),
     });
-    function saveTime() {
-      localStorage.setItem("perviousTime", JSON.stringify(time));
-      // console.log(localStorage.perviousTime);
-      // console.log(JSON.parse(localStorage.getItem("perviousTime")));
-    }
-    saveTime();
+
+    // function saveTime() {
+    //   // console.log(localStorage.perviousTime);
+    //   // console.log(JSON.parse(localStorage.getItem("perviousTime")));
+    // }
+    // saveTime();
 
     //tick的方法
     const tick = () => {
       // 暂停，或已结束
       //当分钟和秒都为零，已结束
+
       if (time.minutes === 0 && time.seconds === 0) {
         setOver(true);
         timeOver();

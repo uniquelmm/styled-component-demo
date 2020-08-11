@@ -1,8 +1,9 @@
-import React, { ChangeEvent, FC, useCallback, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 import styled from "styled-components";
 import data from "../../data";
 import { ProductPrice } from "./ProductPrice";
 import { ProductQuantity } from "./ProductQuantity";
+import { ProductSelect } from "./ProductSelect";
 //改变类型
 interface DisplayShowProps {
   setDisplayShow: (value: string) => void;
@@ -10,12 +11,6 @@ interface DisplayShowProps {
   showViewProducts: string;
   setShowViewProducts: (value: string) => void;
 }
-//产品 select 选择框组件
-// interface ProductVariantSelectProps {
-//   variants: VariantFragment[]; // 所有变种
-//   value: string; // 当前变种 Id
-//   onChange: (value: string) => void; // select 选择框改变时触发
-// }
 
 const BigProductContainer = styled.div`
   width: 100%;
@@ -96,45 +91,11 @@ const ProductIcon = styled.div`
   }
 `;
 
-// const ProductSelect = styled.select`
-//   width: 100%;
-//   padding: 10px 30px 10px 10px;
-//   appearance: none;
-// `;
-
 // 数量
 const NumberControl = styled.div`
   display: flex;
   margin-left: 10px;
 `;
-
-// // 数量减
-// const ButtonOne = styled.button`
-//   padding: 5px 10px;
-//   height: 39px;
-//   background: #ececec;
-//   font-size: 17px;
-//   border: none;
-//   cursor: pointer;
-// `;
-
-// // 数字
-// const Input = styled.input`
-//   border: 1px solid #e4e4e4;
-//   border-radius: 3px;
-//   text-align: center;
-//   width: 30px;
-// `;
-
-// // 数量增
-// const ButtonTow = styled.button`
-//   padding: 5px 10px;
-//   height: 39px;
-//   background: #ececec;
-//   font-size: 17px;
-//   border: none;
-//   cursor: pointer;
-// `;
 
 // 产品价格
 const Price = styled.div`
@@ -157,33 +118,6 @@ const Button = styled.button`
   border: none;
 `;
 
-// 产品现价
-// const DiscountPrice = styled.div`
-//   margin-right: 5px;
-//   color: #0773f1;
-//   font-size: 1.5em;
-//   font-weight: 600;
-// `;
-
-// 产品原价
-// const OriginalPrice = styled.div`
-//   margin-right: 5px;
-//   color: #f41b1b;
-//   font-weight: 600;
-//   font-size: 1.5em;
-// `;
-
-// const Frame = styled.div`
-//   border: 1px solid #0773f1;
-//   border-radius: 50px;
-//   text-align: center;
-//   padding: 5px 7px;
-//   font-size: 12px;
-//   color: #0773f1;
-//   display: flex;
-//   justify-content: center;
-// `;
-
 const ForkTop = styled.div`
   right: 13px;
   top: 8px;
@@ -192,22 +126,6 @@ const ForkTop = styled.div`
   z-index: 99999;
 `;
 
-// const Percent = styled.div``;
-// const Off = styled.div``;
-
-// declare module namespace{
-//   export interface FeaturedImage{
-//     id: any;
-//     product_id: any;
-//     position: number;
-//     created_at: Date;
-//     updated_at: Date;
-//     alt?: any;
-//     width: number;
-//     height: number;
-//     src: string;
-//   }
-// }
 //产品组件打叉
 const Product: FC<DisplayShowProps> = ({
   setDisplayShow,
@@ -218,14 +136,14 @@ const Product: FC<DisplayShowProps> = ({
   const [currentProduct, setCurrentProduct] = useState(data.variants[0]);
   const [productNumber, setProductNumber] = useState(1);
 
-  const handleChangeProduct = (event: ChangeEvent<HTMLSelectElement>) => {
-    // console.log(event.target.value);
+  const handleProductVariant = (id: string) => {
     data.variants.find((variant: any) => {
-      if (variant.id === JSON.parse(event.target.value)) {
+      if (variant.id === Number(id)) {
         setCurrentProduct(variant);
       }
     });
   };
+
   //产品减少
   const reduceProductNumber = useCallback((value) => {
     changeProductNumber(value - 1);
@@ -263,41 +181,17 @@ const Product: FC<DisplayShowProps> = ({
           <Name>{currentProduct.title}</Name>
           <Size>
             <ProductIcon>
-              {/* <ProductSelect onChange={handleChangeProduct}>
-                {data?.variants?.map((variant: any) => {
-                  let fruits = [
-                    variant.option1,
-                    variant.option2,
-                    variant.option3,
-                  ];
-                  let options = fruits.join("/");
-                  return (
-                    <option key={variant.id} value={variant.id}>
-                      {options}
-                    </option>
-                  );
-                })}
-              </ProductSelect> */}
+              <ProductSelect
+                variants={data.variants}
+                value={data.variants.id}
+                onChange={handleProductVariant}
+              />
             </ProductIcon>
             <NumberControl>
               <ProductQuantity
                 value={productNumber}
                 onChange={changeProductNumber}
               />
-              {/* <ButtonOne onClick={() => reduceProductNumber(productNumber)}>
-                -
-              </ButtonOne>
-              <Input
-                value={productNumber}
-                onChange={(event) => {
-                  const value = event.target.value;
-                  changeProductNumber(Number(value));
-                  setProductNumber(Number(event.target.value));
-                }}
-              />
-              <ButtonTow onClick={() => addProductNumber(productNumber)}>
-                +
-              </ButtonTow> */}
             </NumberControl>
           </Size>
           <Price>
@@ -306,14 +200,6 @@ const Product: FC<DisplayShowProps> = ({
               discountPrice={currentProduct.discountPrice}
               discountRate={currentProduct.percentage}
             />
-            {/* <DiscountPrice>${currentProduct.discountPrice}</DiscountPrice>
-            <OriginalPrice>
-              <s>${currentProduct.price}</s>
-            </OriginalPrice>
-            <Frame>
-              <Percent>{currentProduct.percentage}</Percent>
-              <Off>OFF</Off>
-            </Frame> */}
           </Price>
           <Button onClick={handleProductData}>Accept</Button>
         </ProductContainer>

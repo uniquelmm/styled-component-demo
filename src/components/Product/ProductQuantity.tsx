@@ -37,7 +37,6 @@ export const ProductQuantity: FC<ProductQuantityProps> = ({
   value,
   onChange,
 }) => {
-  const [currentProduct, setCurrentProduct] = useState(data.variants[0]);
   const [productNumber, setProductNumber] = useState(1);
   //产品减少
   const reduceProductNumber = useCallback((value) => {
@@ -69,7 +68,7 @@ export const ProductQuantity: FC<ProductQuantityProps> = ({
           setProductNumber(Number(event.target.value));
         }}
       />
-      <ButtonAdd onClick={() => addProductNumber(productNumber)}>+</ButtonAdd>
+      <ButtonAdd onClick={() => addProductNumber(value)}>+</ButtonAdd>
     </>
   );
 };
